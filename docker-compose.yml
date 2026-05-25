@@ -1,0 +1,46 @@
+
+
+
+  services:
+    tailscale:
+      image: tailscale/tailscale:latest
+      container_name: ts-windjams
+      hostname: windjams
+      environment:
+        - TS_AUTHKEY=${TS_AUTHKEY}
+        - TS_STATE_DIR=/var/lib/tailscale
+      volumes:
+        - ./tailscale-data:/var/lib/tailscale
+        - /dev/net/tun:/dev/net/tun
+      cap_add:
+        - NET_ADMIN
+        - SYS_MODULE
+      restart: unless-stopped
+
+    db:
+      image: postgres:15
+      container_name: db_windjams
+      restart: unless-stopped
+      env_file:
+        - .env
+      volumes:
+        - windjams_postgres_data:/var/lib/postgresql/data
+      network_mode: "service:tailscale"
+      depends_on:
+        - tailscale
+
+    web:
+      build: .
+      container_name: web_windjams
+      restart: unless-stopped
+      env_file:
+        - .env
+      volumes:
+        - ./app:/code/app
+      command: uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+      network_mode: "service:tailscale"
+      depends_on:
+        - tailscale
+
+  volumes:
+    windjams_postgres_data:

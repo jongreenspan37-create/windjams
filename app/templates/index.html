@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WindJAMS - Ship Maintenance</title>
+    <!-- Local links for offline ship use 
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <script src="{{ url_for('static', path='/js/htmx.min.js') }}"></script>-->
+    <style>
+        body { display: flex; margin: 0; font-family: sans-serif; height: 100vh; }
+        #sidebar { width: 250px; background: #2c3e50; color: white; padding: 20px; }
+        #content { flex: 1; padding: 40px; background: #f4f7f6; overflow-y: auto; }
+        nav ul { list-style: none; padding: 0; }
+        nav li { margin-bottom: 15px; }
+        nav a { color: #ecf0f1; text-decoration: none; font-size: 1.1rem; }
+        nav a:hover { color: #3498db; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <h2>WindJAMS</h2>
+        <hr>
+        <nav>
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/incidents">Incident Reporting</a></li>
+                <li><a href="{{ url_for('placeholder') }}">SMS</a></li>
+                <li><a href="/audits">Audit Logs</a></li>
+                <li><a href="/activedftworkorders">Work Orders</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="content">
+        <!-- This is where the content of other pages will appear -->
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>
